@@ -1,0 +1,67 @@
+snowflake issue which says that the string is larger than expected
+
+ERROR
+snowflake
+Snowflake Query copy into "DATACORAL_JIRA"."ISSUE_LOADER_20221001060000_20221001120209" ("EXPAND", "ID", "KEY", "SELF", "RENDEREDFIELDS", "PROPERTIES", "NAMES", "SCHEMA", "TRANSITIONS", "OPERATIONS", "EDITMETA", "CHANGELOG", "VERSIONEDREPRESENTATIONS", "FIELDSTOINCLUDE", "FIELDS", "UPDATED") from (select parse_json($1):"expand", parse_json($1):"id", parse_json($1):"key", parse_json($1):"self", parse_json($1):"renderedfields", parse_json($1):"properties", parse_json($1):"names", parse_json($1):"schema", parse_json($1):"transitions", parse_json($1):"operations", parse_json($1):"editmeta", parse_json($1):"changelog", parse_json($1):"versionedrepresentations", parse_json($1):"fieldstoinclude", parse_json($1):"fields", parse_json($1):"updated" from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=01/h=06/n=00/) failed with error: Error [OperationFailedError]: String 'customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT...' is too long and would be truncated
+
+
+"Query no 5 failed. Original Error String 'customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT...' is too long and would be truncated",
+
+
+Error [OperationFailedError]: String 'customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT...' is too long and would be truncated
+
+
+expand	string (256)
+id*	string (256)
+key	string (256)
+self	string (256)
+renderedfields	string (256)
+properties	string (65535)
+names	string (65535)
+schema	string (65535)
+transitions	string (65535)
+operations	string (65535)
+editmeta	string (65535)
+changelog	string (65535)
+versionedrepresentations	string (65535)
+fieldstoinclude	string (65535)
+fields	string (65535)
+updated	string (256)
+
+ expand id key self renderedfields properties names schema transitions operations editmeta changelog versionedrepresentations fieldstoinclude fields updated
+
+ for i in expand id key self renderedfields properties names schema transitions operations editmeta changelog versionedrepresentations fieldstoinclude fields updated; do echo "\"select count(*) as ${i}_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json(\$1):\\\"${i}\\\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'\","; done
+
+
+
+
+
+
+[
+ "select count(*) as expand_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"expand\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as id_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"id\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as key_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"key\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as self_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"self\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as renderedfields_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"renderedfields\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as properties_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"properties\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as names_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"names\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as schema_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"schema\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as transitions_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"transitions\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as operations_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"operations\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as editmeta_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"editmeta\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as changelog_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"changelog\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as versionedrepresentations_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"versionedrepresentations\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as fieldstoinclude_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"fieldstoinclude\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as fields_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"fields\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+"select count(*) as updated_count from @public.datacoral_flexport_snowflake/datacoral_jira/issue/y=2022/m=10/d=02/h=00/n=00/ where parse_json($1):\"updated\" like '%customfield_12876.cmdb.objectKey,customfield_12876.cmdb.label,editmeta,changelog,renderedFields,customfield_12875.cmdb.objectKey,customfield_12876.cmdb.attributes,operations,customfield_10200.requestT%'",
+]
+
+
+20221001060000
+20221001120000
+20221001180000
+20221002000000
+20221002060000
+20221002120000
+20221002180000
+20221003000000

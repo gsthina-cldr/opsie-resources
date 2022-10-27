@@ -1,0 +1,97 @@
+Failed to cast variant value "0001-10-11 00:00:00 BC" to TIMESTAMP_NTZ
+
+https://csh.cloudera.com/ccs/index.html#/case/908217/case-details
+
+https://app.datacoral.io/flexport/default/flexport/organize/snowflake/datacoral_core/bills?selectedTL=20221006200000
+
+fetch the timestamp columns from the loadunits
+
+due_date created_at updated_at deleted_at paid_in_full_at pending_approval_at it_date netsuite_sync_enabled_at cancelled_at approved_at
+
+
+Script to generate queries:
+
+for i in due_date created_at updated_at deleted_at paid_in_full_at pending_approval_at it_date netsuite_sync_enabled_at cancelled_at approved_at; do echo "\"select count(*) as ${i}_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json(\$1):\\\"${i}\\\" like '% BC%'\","; done
+
+
+[
+"select count(*) as due_date_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"due_date\" like '% BC%'",
+"select count(*) as created_at_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"created_at\" like '% BC%'",
+"select count(*) as updated_at_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"updated_at\" like '% BC%'",
+"select count(*) as deleted_at_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"deleted_at\" like '% BC%'",
+"select count(*) as paid_in_full_at_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"paid_in_full_at\" like '% BC%'",
+"select count(*) as pending_approval_at_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"pending_approval_at\" like '% BC%'",
+"select count(*) as it_date_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"it_date\" like '% BC%'",
+"select count(*) as netsuite_sync_enabled_at_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"netsuite_sync_enabled_at\" like '% BC%'",
+"select count(*) as cancelled_at_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"cancelled_at\" like '% BC%'",
+"select count(*) as approved_at_count from @public.datacoral_flexport_snowflake/datacoral_core/bills/y=2022/m=10/d=06/h=20/n=00/ where parse_json($1):\"approved_at\" like '% BC%'"
+]
+
+Run the above queries: https://prod-deploy.datacoral.io/job/runQueryPrintOutPut/32560/console
+
+
+[[{"QUERY_GENERATED_TIME":"Fri Oct  7 13:01:19 UTC 2022"}],[{"DUE_DATE_COUNT":1}],[{"CREATED_AT_COUNT":0}],[{"UPDATED_AT_COUNT":0}],[{"DELETED_AT_COUNT":0}],[{"PAID_IN_FULL_AT_COUNT":0}],[{"PENDING_APPROVAL_AT_COUNT":0}],[{"IT_DATE_COUNT":0}],[{"NETSUITE_SYNC_ENABLED_AT_COUNT":0}],[{"CANCELLED_AT_COUNT":0}],[{"APPROVED_AT_COUNT":0}]]
+
+
+[
+	[{
+		"QUERY_GENERATED_TIME": "Fri Oct  7 13:01:19 UTC 2022"
+	}],
+	[{
+		"DUE_DATE_COUNT": 1
+	}],
+	[{
+		"CREATED_AT_COUNT": 0
+	}],
+	[{
+		"UPDATED_AT_COUNT": 0
+	}],
+	[{
+		"DELETED_AT_COUNT": 0
+	}],
+	[{
+		"PAID_IN_FULL_AT_COUNT": 0
+	}],
+	[{
+		"PENDING_APPROVAL_AT_COUNT": 0
+	}],
+	[{
+		"IT_DATE_COUNT": 0
+	}],
+	[{
+		"NETSUITE_SYNC_ENABLED_AT_COUNT": 0
+	}],
+	[{
+		"CANCELLED_AT_COUNT": 0
+	}],
+	[{
+		"APPROVED_AT_COUNT": 0
+	}]
+]
+
+
+rogue column is due_date
+
+
+[
+"begin",
+"alter table datacoral_core.bills add column due_date_stage varchar(32);",
+"update datacoral_core.bills set due_date_stage=due_date::varchar",
+"alter table datacoral_core.bills drop column due_date;",
+"alter table datacoral_core.bills rename column due_date_stage to due_date;",
+"commit"
+]
+
+https://prod-deploy.datacoral.io/job/runQueryPrintOutPut/32561/console
+
+
+Reprocess the snowflake MV
+
+On a side note:
+
+You can reprocess the snowflake MV TL from UI.
+
+But, FYI:
+
+https://prod-deploy.datacoral.io/job/trigger-snowflake-loads/ is for old flow
+https://prod-deploy.datacoral.io/job/trigger-snowflake_OR_redshift-loads/ is for new flow

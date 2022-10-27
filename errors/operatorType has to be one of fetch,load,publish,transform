@@ -1,0 +1,19 @@
+1. Find a SUCCESS LU and get the dependency_configuration from the dynamodb using below command:
+
+https://prod-deploy.datacoral.io/job/manual-aws-cli-commands/5407/parameters/
+
+aws dynamodb get-item --table-name datacoral_ghprod_dependency_configuration --key '{ "key":{"S":"redshift|ghr_silo6"},"name":{"S":"allowed_email_sender_preferences"}}' | jq '.Item'
+
+
+2. Update the json with below key value pair and update it to the table using below command:
+
+  "operatorType": {
+   "S": "load"
+  }
+
+https://prod-deploy.datacoral.io/job/manual-aws-cli-commands/5406/parameters/
+
+aws dynamodb put-item --table-name  datacoral_ghprod_dependency_configuration --item  file://filepayload.json --profile greenhouse
+
+
+3. Reprocess the redshift MV's TL and ensure it goes through 

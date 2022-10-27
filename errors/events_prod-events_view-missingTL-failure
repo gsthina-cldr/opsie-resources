@@ -1,0 +1,37 @@
+1. get the failed TL summary in case of failure or in case of missing events TL summary get the TL summary of already successful TL using
+
+https://prod-deploy.datacoral.io/job/manual-aws-cli-commands/
+
+aws --profile greenhouse dynamodb get-item --table-name datacoral_ghprod_timelabel_summary --key '{"key": {"S": "redshift|events_prod|events_view"}, "timelabel": { "S": "20221011180000"} }'  | jq '.Item'
+
+
+2. add a dummy partition table name in the executionContext and change the timelabel to corresponding to missing TL of TL summary obtained from step #1
+
+"executionContext": {
+    "M": {
+      "partitionTable": {
+        "S": "_events_20221011180054"
+      }
+    }
+  },
+"timelabel": {
+    "S": "20221011170000"
+  },
+
+3. Put back the updated TL summary using
+
+https://prod-deploy.datacoral.io/job/manual-aws-cli-commands/
+
+aws dynamodb put-item --table-name  datacoral_ghprod_timelabel_summary --item file://~/Documents/Datacoral/greenhouse/put_item.json --profile greenhouse
+
+
+4. create the dummy partition table in redshift (table name should be the same as dummy partition table name in step #2) using
+
+https://prod-deploy.datacoral.io/job/runQueryPrintOutPut/
+
+create table events_prod._events_20221011180054 (like events_prod.events);
+
+
+5. Send success SNS to missing events TL using 
+
+https://prod-deploy.datacoral.io/job/sns-table-update-notification/9175/parameters/

@@ -1,0 +1,5 @@
+This is due to the fact that the complete json data is considered to be one single row. This exceeds the row size.
+
+ENGESC is opened to analyse the feasibility of product fix.
+
+Customer has to clean up such data to avoid these errors until then.

@@ -1,0 +1,10 @@
+ERROR: ER_MASTER_FATAL_ERROR_READING_BINLOG: Client requested master to start replication from impossible position; the first event 'mariadb-bin.050181' at 104863234, the last event read from 'mariadb-bin.050181' at 4, the last byte read from 'mariadb-bin.050181' at 4.
+
+
+https://cloudera.atlassian.net/wiki/spaces/CS/pages/10053845072/MySQL+CDC+ER+MASTER+FATAL+ERROR+READING+BINLOG
+
+Get the latest successful timelabelSummary
+
+Change the position in previousCDCPos = 0
+
+Put the new TLS (with 0 in position)
